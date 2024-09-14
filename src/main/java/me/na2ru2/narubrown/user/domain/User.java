@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
