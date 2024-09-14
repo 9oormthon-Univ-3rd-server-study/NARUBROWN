@@ -28,10 +28,6 @@ public record OAuth2UserInfo(
     }
 
     private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
-        for (String key: attributes.keySet()) {
-            log.info(key);
-            log.info(attributes.get(key).toString());
-        }
         return OAuth2UserInfo.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
