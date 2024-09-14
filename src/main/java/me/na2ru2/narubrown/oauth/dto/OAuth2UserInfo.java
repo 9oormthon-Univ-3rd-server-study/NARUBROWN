@@ -22,12 +22,16 @@ public record OAuth2UserInfo(
             return ofGoogle(attributes);
         } else if (registrationId.equals("kakao")) {
             return ofKakao(attributes);
+        } else {
+            throw new RuntimeException("일치하는 registrationId가 없습니다.");
         }
-        log.error("일치하는 REGI ID가 없습니다.");
-        return null;
     }
 
     private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
+        for (String key: attributes.keySet()) {
+            log.info(key);
+            log.info(attributes.get(key).toString());
+        }
         return OAuth2UserInfo.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
@@ -45,7 +49,7 @@ public record OAuth2UserInfo(
                 .name((String) profile.get("nickname"))
                 .email((String) account.get("email"))
                 .nameAttributesKey("email")
-                .attributes(attributes)
+                .attributes(account)
                 .build();
     }
 

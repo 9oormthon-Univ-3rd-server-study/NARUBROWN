@@ -25,7 +25,7 @@ public class SecurityConfig {
     private final OAuthSuccessHandler oAuthSuccessHandler;
     private final String[] allowedURLs = {
             "/swagger-resources/**", "/swagger-ui/index.html", "/webjars/**", "/swagger/**", "/users/exception", "/v3/api-docs/**", "/swagger-ui/**",
-            "/user/sign-in", "/user/sign-up", "/oauth/kakao", "/oauth/google", "/error", "/favicon.ico",
+            "/user/sign-in", "/user/sign-up", "/oauth2/**", "/login/**", "/error", "/favicon.ico", "/auth/**",
             "**exception**"
     };
     @Bean

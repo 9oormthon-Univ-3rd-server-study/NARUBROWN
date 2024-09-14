@@ -2,6 +2,7 @@ package me.na2ru2.narubrown.oauth.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.na2ru2.narubrown.oauth.dto.OAuth2UserInfo;
 import me.na2ru2.narubrown.user.domain.User;
 import me.na2ru2.narubrown.user.repository.UserRepository;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CustomOAuthUserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
@@ -29,11 +31,11 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
         String provider = userRequest.getClientRegistration().getRegistrationId();
         OAuth2UserInfo attributes = OAuth2UserInfo.of(provider, oAuth2User.getAttributes());
         Optional<User> user = userRepository.findByEmail(attributes.email());
+        log.info(attributes.getClass().getName());
         if (user.isEmpty()) {
             userRepository.save(attributes.toEntity());
         }
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
         return new DefaultOAuth2User(authorities, attributes.attributes(), attributes.nameAttributesKey());
-
     }
 }

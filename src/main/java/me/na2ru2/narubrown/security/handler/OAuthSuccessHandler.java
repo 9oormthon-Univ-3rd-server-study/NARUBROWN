@@ -22,7 +22,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     private static final String URI = "/auth/success";
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info(authentication.getName());
         String accessToken = jwtProvider.createAccessToken(authentication.getName());
 
         response.addCookie(createCookie(accessToken));
