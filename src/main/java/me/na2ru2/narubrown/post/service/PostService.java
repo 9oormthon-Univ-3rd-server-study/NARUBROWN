@@ -8,6 +8,8 @@ import me.na2ru2.narubrown.post.dto.res.PostResDto;
 import me.na2ru2.narubrown.post.repository.PostRepository;
 import me.na2ru2.narubrown.user.domain.User;
 import me.na2ru2.narubrown.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,6 +39,11 @@ public class PostService {
                 .build();
         postRepository.save(newPost);
         notificationService.notify(foundUser.getEmail(), "게시글이 생성되었습니다.");
-    }
+}
+
+public Page<PostResDto> findMyPost(Pageable pageable, Long user_id) {
+    User foundUser = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+    return postRepository.findAllByUser(foundUser, pageable).map(PostResDto::from);
+}
 
 }
