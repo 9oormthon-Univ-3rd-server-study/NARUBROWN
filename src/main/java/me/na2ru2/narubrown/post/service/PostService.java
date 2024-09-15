@@ -1,6 +1,7 @@
 package me.na2ru2.narubrown.post.service;
 
 import lombok.RequiredArgsConstructor;
+import me.na2ru2.narubrown.notification.service.NotificationService;
 import me.na2ru2.narubrown.post.domain.Post;
 import me.na2ru2.narubrown.post.dto.req.PostReqDto;
 import me.na2ru2.narubrown.post.dto.res.PostResDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public PostResDto findPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post를 찾을 수 없습니다."));
@@ -34,6 +36,7 @@ public class PostService {
                 .user(foundUser)
                 .build();
         postRepository.save(newPost);
+        notificationService.notify(foundUser.getEmail(), "게시글이 생성되었습니다.");
     }
 
 }
